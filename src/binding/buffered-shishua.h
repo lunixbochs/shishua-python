@@ -19,7 +19,7 @@ void buffered_shishua_fill_buffer(buffered_shishua_state *bss) {
 // Returns a pointer to a newly allocated instance.
 buffered_shishua_state *buffered_shishua_new(uint64_t seed[4]) {
   buffered_shishua_state *bss;
-  posix_memalign(&bss, 128, sizeof(buffered_shishua_state));
+  posix_memalign((void **)&bss, 128, sizeof(buffered_shishua_state));
   prng_init(&bss->state, seed);
   buffered_shishua_fill_buffer(bss);
   return bss;
@@ -71,7 +71,7 @@ uint32_t shishua_next_uint32(void *st) {
 }
 
 double shishua_next_double(void *st) {
-  return shishua_next_uint64(st) / 0x10000000000000000;
+  return (double)shishua_next_uint64(st) / 0x10000000000000000p0;
 }
 
 #undef BUFSIZE
