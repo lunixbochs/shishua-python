@@ -94,7 +94,7 @@ cdef class SHISHUA:
         cdef const char *name = "BitGenerator"
         self.capsule = PyCapsule_New(<void *>&self._bitgen, name, NULL)
 
-    def fill(self, buffer):
+    def fill(self, uint8_t[:] buf):
         """
         fill(self, buffer)
 
@@ -105,7 +105,7 @@ cdef class SHISHUA:
         buffer : bytearray
             Buffer that gets fully rewritten with random bytes.
         """
-        buffered_shishua_fill(self.rng_state, buffer, len(buffer))
+        buffered_shishua_fill(self.rng_state, &buf[0], buf.shape[0])
 
     def random_raw(self, size=1):
         """
